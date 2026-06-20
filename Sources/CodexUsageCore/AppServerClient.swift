@@ -53,95 +53,126 @@ public struct AppServerClient: RateLimitFetching, Sendable {
         } catch {
             throw AppServerError.launchFailed(error.localizedDescription)
         }
-
-        let requests = [
-            #"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"clientInfo":{"name":"codex-touch-bar","title":"Codex Touch Bar","version":"0.1.0"},"capabilities":{}}}"#,
-            #"{"jsonrpc":"2.0","id":2,"method":"account/rateLimits/read","params":{}}"#,
-        ].joined(separator: "\n") + "\n"
-
-        inputPipe.fileHandleForWriting.write(Data(requests.utf8))
-        try? inputPipe.fileHandleForWriting.close()
-
-        let output = DataBox()
-        let completed = DispatchSemaphore(value: 0)
-        DispatchQueue.global(qos: .userInitiated).async {
-            output.set(outputPipe.fileHandleForReading.readDataToEndOfFile())
-            completed.signal()
-        }
-
-        let waitResult = completed.wait(timeout: .now() + timeout)
-        if waitResult == .timedOut {
+        defer {
+            try? inputPipe.fileHandleForWriting.close()
             if process.isRunning {
                 process.terminate()
             }
-            try? outputPipe.fileHandleForReading.close()
-            throw AppServerError.timeout
         }
 
-        if process.isRunning {
-            process.terminate()
+        let lines = LineQueue()
+        DispatchQueue.global(qos: .userInitiated).async {
+            while true {
+                let data = outputPipe.fileHandleForReading.availableData
+                guard !data.isEmpty else {
+                    lines.finish()
+                    return
+                }
+                lines.append(data)
+            }
         }
-        guard let data = output.get(), !data.isEmpty else {
-            throw AppServerError.disconnected
-        }
-        return try decodeRateLimits(from: data)
+
+        let deadline = Date().addingTimeInterval(timeout)
+        write(
+            #"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"clientInfo":{"name":"codex-touch-bar","title":"Codex Touch Bar","version":"0.1.0"},"capabilities":{}}}"#,
+            to: inputPipe.fileHandleForWriting
+        )
+        _ = try response(id: 1, from: lines, deadline: deadline)
+        write(
+            #"{"jsonrpc":"2.0","id":2,"method":"account/rateLimits/read","params":{}}"#,
+            to: inputPipe.fileHandleForWriting
+        )
+        let rateLimitResponse = try response(id: 2, from: lines, deadline: deadline)
+        return try decodeRateLimits(from: rateLimitResponse)
     }
 
-    private func decodeRateLimits(from data: Data) throws -> RateLimitSnapshot {
-        let lines = data.split(separator: 0x0A)
-        for line in lines {
+    private func write(_ message: String, to handle: FileHandle) {
+        handle.write(Data((message + "\n").utf8))
+    }
+
+    private func response(id: Int, from lines: LineQueue, deadline: Date) throws -> [String: Any] {
+        while Date() < deadline {
+            guard let line = lines.next(until: deadline) else {
+                throw AppServerError.timeout
+            }
             guard
-                let object = try JSONSerialization.jsonObject(with: Data(line)) as? [String: Any],
-                (object["id"] as? NSNumber)?.intValue == 2
+                let data = line.data(using: .utf8),
+                let object = try JSONSerialization.jsonObject(with: data) as? [String: Any]
             else {
                 continue
             }
-
-            if let error = object["error"] as? [String: Any] {
-                let code = (error["code"] as? NSNumber)?.intValue ?? -1
-                let message = error["message"] as? String ?? "Unknown app-server error"
-                let normalized = message.lowercased()
-                if normalized.contains("not signed") || normalized.contains("unauth") {
-                    throw AppServerError.unauthenticated
-                }
-                throw AppServerError.rpc(code: code, message: message)
+            if (object["id"] as? NSNumber)?.intValue == id {
+                return object
             }
-
-            guard let result = object["result"] as? [String: Any] else {
-                throw AppServerError.invalidResponse
-            }
-            let snapshotObject: Any?
-            if
-                let buckets = result["rateLimitsByLimitId"] as? [String: Any],
-                let codex = buckets["codex"]
-            {
-                snapshotObject = codex
-            } else {
-                snapshotObject = result["rateLimits"]
-            }
-            guard let snapshotObject else {
-                throw AppServerError.invalidResponse
-            }
-            let snapshotData = try JSONSerialization.data(withJSONObject: snapshotObject)
-            return try JSONDecoder().decode(RateLimitSnapshot.self, from: snapshotData)
         }
-        throw AppServerError.invalidResponse
+        throw AppServerError.timeout
+    }
+
+    private func decodeRateLimits(from object: [String: Any]) throws -> RateLimitSnapshot {
+        if let error = object["error"] as? [String: Any] {
+            let code = (error["code"] as? NSNumber)?.intValue ?? -1
+            let message = error["message"] as? String ?? "Unknown app-server error"
+            let normalized = message.lowercased()
+            if normalized.contains("not signed") || normalized.contains("unauth") {
+                throw AppServerError.unauthenticated
+            }
+            throw AppServerError.rpc(code: code, message: message)
+        }
+
+        guard let result = object["result"] as? [String: Any] else {
+            throw AppServerError.invalidResponse
+        }
+        let snapshotObject: Any?
+        if
+            let buckets = result["rateLimitsByLimitId"] as? [String: Any],
+            let codex = buckets["codex"]
+        {
+            snapshotObject = codex
+        } else {
+            snapshotObject = result["rateLimits"]
+        }
+        guard let snapshotObject else {
+            throw AppServerError.invalidResponse
+        }
+        let snapshotData = try JSONSerialization.data(withJSONObject: snapshotObject)
+        return try JSONDecoder().decode(RateLimitSnapshot.self, from: snapshotData)
     }
 }
 
-private final class DataBox: @unchecked Sendable {
-    private let lock = NSLock()
-    private var data: Data?
+private final class LineQueue: @unchecked Sendable {
+    private let condition = NSCondition()
+    private var buffer = Data()
+    private var lines: [String] = []
+    private var isFinished = false
 
-    func set(_ value: Data) {
-        lock.lock()
-        data = value
-        lock.unlock()
+    func append(_ data: Data) {
+        condition.lock()
+        buffer.append(data)
+        while let newline = buffer.firstIndex(of: 0x0A) {
+            let lineData = buffer.prefix(upTo: newline)
+            buffer.removeSubrange(...newline)
+            if let line = String(data: lineData, encoding: .utf8) {
+                lines.append(line)
+            }
+        }
+        condition.broadcast()
+        condition.unlock()
     }
 
-    func get() -> Data? {
-        lock.lock()
-        defer { lock.unlock() }
-        return data
+    func finish() {
+        condition.lock()
+        isFinished = true
+        condition.broadcast()
+        condition.unlock()
+    }
+
+    func next(until deadline: Date) -> String? {
+        condition.lock()
+        defer { condition.unlock() }
+        while lines.isEmpty && !isFinished {
+            guard condition.wait(until: deadline) else { return nil }
+        }
+        guard !lines.isEmpty else { return nil }
+        return lines.removeFirst()
     }
 }
