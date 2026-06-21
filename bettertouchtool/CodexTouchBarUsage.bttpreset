@@ -1,0 +1,118 @@
+{
+  "BTTPresetName": "Codex Touch Bar Usage",
+  "BTTPresetUUID": "09B74DE3-AD98-4B1D-8492-F3374AEF18D5",
+  "BTTPresetCreatorNotes": "Codex five-hour and weekly remaining usage",
+  "BTTPresetContent": [
+    {
+      "BTTAppBundleIdentifier": "com.openai.codex",
+      "BTTAppName": "Codex",
+      "BTTAppAutoInvertIcon": 1,
+      "BTTAppProcessMatchMode": 2,
+      "BTTAppProcessName": "Codex",
+      "BTTTriggers": [
+        {
+          "BTTWidgetName": "Codex 用量",
+          "BTTTriggerType": 642,
+          "BTTTriggerTypeDescription": "Shell Script / Task Widget",
+          "BTTTriggerClass": "BTTTriggerTypeTouchBar",
+          "BTTShellScriptWidgetGestureConfig": "/bin/bash:::-c",
+          "BTTEnabled2": 1,
+          "BTTUUID": "68EF131A-8125-4A55-8724-D422EA24C6AE",
+          "BTTEnabled": 1,
+          "BTTOrder": 1,
+          "BTTWidgetWidth": "620",
+          "BTTTriggerConfig": {
+            "BTTTouchBarShellScriptString": "\"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage\"",
+            "BTTTouchBarScriptUpdateInterval": 60,
+            "BTTTouchBarItemPlacement": 2,
+            "BTTTouchBarItemPadding": 4,
+            "BTTTouchBarFreeSpaceAfterButton": "8.000000",
+            "BTTTouchBarButtonColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarAlternateBackgroundColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarFontColor": "255.000000, 255.000000, 255.000000, 255.000000",
+            "BTTTouchBarButtonFontSize": 12,
+            "BTTTouchBarButtonFontSizeLine2": 11,
+            "BTTTouchBarButtonUseFixedWidth": 1,
+            "BTTTouchBarButtonWidth": 620,
+            "BTTTouchBarUseMonoSpacedFont": 1,
+            "BTTTouchBarAlwaysShowButton": "0"
+          }
+        }
+      ]
+    },
+    {
+      "BTTAppBundleIdentifier": "com.apple.Terminal",
+      "BTTAppName": "Terminal",
+      "BTTAppAutoInvertIcon": 1,
+      "BTTAppProcessMatchMode": 2,
+      "BTTAppProcessName": "Terminal",
+      "BTTTriggers": [
+        {
+          "BTTWidgetName": "Codex 用量",
+          "BTTTriggerType": 642,
+          "BTTTriggerTypeDescription": "Shell Script / Task Widget",
+          "BTTTriggerClass": "BTTTriggerTypeTouchBar",
+          "BTTShellScriptWidgetGestureConfig": "/bin/bash:::-c",
+          "BTTEnabled2": 1,
+          "BTTUUID": "1579C7D4-C269-48F6-A09C-FBD4A09500BF",
+          "BTTEnabled": 1,
+          "BTTOrder": 1,
+          "BTTWidgetWidth": "620",
+          "BTTTriggerConfig": {
+            "BTTTouchBarShellScriptString": "\"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage\"",
+            "BTTTouchBarScriptUpdateInterval": 60,
+            "BTTTouchBarItemPlacement": 2,
+            "BTTTouchBarItemPadding": 4,
+            "BTTTouchBarFreeSpaceAfterButton": "8.000000",
+            "BTTTouchBarButtonColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarAlternateBackgroundColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarFontColor": "255.000000, 255.000000, 255.000000, 255.000000",
+            "BTTTouchBarButtonFontSize": 12,
+            "BTTTouchBarButtonFontSizeLine2": 11,
+            "BTTTouchBarButtonUseFixedWidth": 1,
+            "BTTTouchBarButtonWidth": 620,
+            "BTTTouchBarUseMonoSpacedFont": 1,
+            "BTTTouchBarAlwaysShowButton": "0"
+          }
+        }
+      ]
+    },
+    {
+      "BTTAppBundleIdentifier": "com.googlecode.iterm2",
+      "BTTAppName": "iTerm2",
+      "BTTAppAutoInvertIcon": 1,
+      "BTTAppProcessMatchMode": 2,
+      "BTTAppProcessName": "iTerm2",
+      "BTTTriggers": [
+        {
+          "BTTWidgetName": "Codex 用量",
+          "BTTTriggerType": 642,
+          "BTTTriggerTypeDescription": "Shell Script / Task Widget",
+          "BTTTriggerClass": "BTTTriggerTypeTouchBar",
+          "BTTShellScriptWidgetGestureConfig": "/bin/bash:::-c",
+          "BTTEnabled2": 1,
+          "BTTUUID": "C3791F56-8CB5-4096-A8C4-C7A140ED6C92",
+          "BTTEnabled": 1,
+          "BTTOrder": 1,
+          "BTTWidgetWidth": "620",
+          "BTTTriggerConfig": {
+            "BTTTouchBarShellScriptString": "\"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage\"",
+            "BTTTouchBarScriptUpdateInterval": 60,
+            "BTTTouchBarItemPlacement": 2,
+            "BTTTouchBarItemPadding": 4,
+            "BTTTouchBarFreeSpaceAfterButton": "8.000000",
+            "BTTTouchBarButtonColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarAlternateBackgroundColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarFontColor": "255.000000, 255.000000, 255.000000, 255.000000",
+            "BTTTouchBarButtonFontSize": 12,
+            "BTTTouchBarButtonFontSizeLine2": 11,
+            "BTTTouchBarButtonUseFixedWidth": 1,
+            "BTTTouchBarButtonWidth": 620,
+            "BTTTouchBarUseMonoSpacedFont": 1,
+            "BTTTouchBarAlwaysShowButton": "0"
+          }
+        }
+      ]
+    }
+  ]
+}
