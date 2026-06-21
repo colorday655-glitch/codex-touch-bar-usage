@@ -31,8 +31,9 @@
             "BTTTouchBarAlternateBackgroundColor": "0.000000, 0.000000, 0.000000, 255.000000",
             "BTTTouchBarFontColor": "255.000000, 255.000000, 255.000000, 255.000000",
             "BTTTouchBarButtonFontSize": 12,
-            "BTTTouchBarButtonFontSizeLine2": 11,
+            "BTTTouchBarButtonFontSizeLine2": 12,
             "BTTTouchBarButtonUseFixedWidth": 1,
+            "BTTTouchBarButtonLineHeight": 18,
             "BTTTouchBarButtonWidth": 620,
             "BTTTouchBarUseMonoSpacedFont": 1,
             "BTTTouchBarAlwaysShowButton": "0"
@@ -68,8 +69,9 @@
             "BTTTouchBarAlternateBackgroundColor": "0.000000, 0.000000, 0.000000, 255.000000",
             "BTTTouchBarFontColor": "255.000000, 255.000000, 255.000000, 255.000000",
             "BTTTouchBarButtonFontSize": 12,
-            "BTTTouchBarButtonFontSizeLine2": 11,
+            "BTTTouchBarButtonFontSizeLine2": 12,
             "BTTTouchBarButtonUseFixedWidth": 1,
+            "BTTTouchBarButtonLineHeight": 18,
             "BTTTouchBarButtonWidth": 620,
             "BTTTouchBarUseMonoSpacedFont": 1,
             "BTTTouchBarAlwaysShowButton": "0"
@@ -105,8 +107,9 @@
             "BTTTouchBarAlternateBackgroundColor": "0.000000, 0.000000, 0.000000, 255.000000",
             "BTTTouchBarFontColor": "255.000000, 255.000000, 255.000000, 255.000000",
             "BTTTouchBarButtonFontSize": 12,
-            "BTTTouchBarButtonFontSizeLine2": 11,
+            "BTTTouchBarButtonFontSizeLine2": 12,
             "BTTTouchBarButtonUseFixedWidth": 1,
+            "BTTTouchBarButtonLineHeight": 18,
             "BTTTouchBarButtonWidth": 620,
             "BTTTouchBarUseMonoSpacedFont": 1,
             "BTTTouchBarAlwaysShowButton": "0"

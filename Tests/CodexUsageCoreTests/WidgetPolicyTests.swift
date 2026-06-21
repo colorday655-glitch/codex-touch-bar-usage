@@ -5,6 +5,8 @@ import Testing
 @Suite("Widget output policy")
 struct WidgetPolicyTests {
     private let now = Date(timeIntervalSince1970: 1_000)
+    private let chineseLocale = Locale(identifier: "zh_CN")
+    private let englishLocale = Locale(identifier: "en_US")
     private let snapshot = RateLimitSnapshot(
         primary: RateLimitWindow(usedPercent: 28, windowDurationMins: 300, resetsAt: 2_000),
         secondary: RateLimitWindow(usedPercent: 56, windowDurationMins: 10_080, resetsAt: 3_000)
@@ -16,7 +18,8 @@ struct WidgetPolicyTests {
         let output = await WidgetPolicy().output(
             client: StubFetcher(result: .success(snapshot)),
             cache: cache,
-            now: now
+            now: now,
+            locale: chineseLocale
         )
 
         #expect(output.contains("72%"))
@@ -32,7 +35,8 @@ struct WidgetPolicyTests {
         let output = await WidgetPolicy().output(
             client: StubFetcher(result: .failure(.disconnected)),
             cache: cache,
-            now: now
+            now: now,
+            locale: chineseLocale
         )
 
         #expect(output.hasSuffix(" ·"))
@@ -47,10 +51,11 @@ struct WidgetPolicyTests {
         let output = await WidgetPolicy().output(
             client: StubFetcher(result: .failure(.disconnected)),
             cache: cache,
-            now: now
+            now: now,
+            locale: englishLocale
         )
 
-        #expect(output == "Codex 用量暂不可用")
+        #expect(output == "Codex usage unavailable")
     }
 
     @Test("shows a signed-out message")
@@ -58,10 +63,11 @@ struct WidgetPolicyTests {
         let output = await WidgetPolicy().output(
             client: StubFetcher(result: .failure(.unauthenticated)),
             cache: temporaryCache(),
-            now: now
+            now: now,
+            locale: englishLocale
         )
 
-        #expect(output == "请先在 Codex 登录")
+        #expect(output == "Sign in to Codex first")
     }
 
     private func temporaryCache() -> UsageCache {

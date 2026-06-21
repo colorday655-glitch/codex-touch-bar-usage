@@ -5,9 +5,12 @@ import Testing
 @Suite("Touch Bar usage formatting")
 struct UsageFormatterTests {
     private let now = Date(timeIntervalSince1970: 1_749_991_720)
+    private let timeZone = TimeZone(identifier: "Asia/Shanghai")!
+    private let chineseLocale = Locale(identifier: "zh_CN")
+    private let englishLocale = Locale(identifier: "en_US")
 
-    @Test("renders five-hour and weekly rows")
-    func rendersFiveHourAndWeeklyRows() {
+    @Test("renders aligned rows with ten-segment bars")
+    func rendersAlignedRowsWithTenSegmentBars() {
         let snapshot = RateLimitSnapshot(
             primary: RateLimitWindow(
                 usedPercent: 28,
@@ -21,13 +24,37 @@ struct UsageFormatterTests {
             )
         )
 
-        let output = UsageFormatter(now: now).render(snapshot)
+        let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)
 
-        #expect(output.split(separator: "\n").count == 2)
-        #expect(output.contains("5小时"))
-        #expect(output.contains("72%"))
-        #expect(output.contains("本周"))
-        #expect(output.contains("44%"))
+        #expect(!output.contains("\n"))
+        #expect(
+            output == """
+            5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  23:06        1周   🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
+            """
+        )
+    }
+
+    @Test("renders localized English labels and dates")
+    func rendersLocalizedEnglishLabelsAndDates() {
+        let snapshot = RateLimitSnapshot(
+            primary: RateLimitWindow(
+                usedPercent: 28,
+                windowDurationMins: 300,
+                resetsAt: 1_750_000_000
+            ),
+            secondary: RateLimitWindow(
+                usedPercent: 56,
+                windowDurationMins: 10_080,
+                resetsAt: 1_750_500_000
+            )
+        )
+
+        let output = UsageFormatter(now: now, timeZone: timeZone, locale: englishLocale).render(snapshot)
+
+        #expect(output.contains("5h"))
+        #expect(output.contains("1w"))
+        #expect(output.contains("Jun"))
+        #expect(output.contains("PM") || output.contains("AM"))
     }
 
     @Test("selects windows by duration when roles are reordered")
@@ -50,7 +77,7 @@ struct UsageFormatterTests {
             secondary: RateLimitWindow(usedPercent: 125, windowDurationMins: 10_080, resetsAt: nil)
         )
 
-        let output = UsageFormatter(now: now).render(snapshot)
+        let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)
 
         #expect(output.contains("100%"))
         #expect(output.contains("0%"))
@@ -63,10 +90,10 @@ struct UsageFormatterTests {
             secondary: nil
         )
 
-        let output = UsageFormatter(now: now).render(snapshot, stale: true)
+        let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot, stale: true)
 
         #expect(output.contains("72%"))
-        #expect(output.contains("本周  ▱▱▱▱▱ --"))
+        #expect(output.contains("5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  --        1周   ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ --"))
         #expect(output.hasSuffix(" ·"))
     }
 
@@ -77,7 +104,7 @@ struct UsageFormatterTests {
             secondary: nil
         )
 
-        let output = UsageFormatter(now: now).render(snapshot)
+        let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)
 
         #expect(output.contains("即将重置"))
     }

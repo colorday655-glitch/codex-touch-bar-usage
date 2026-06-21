@@ -1,0 +1,55 @@
+import Foundation
+
+public struct CodexLocalization: Sendable {
+    private let locale: Locale
+
+    public init(locale: Locale = .autoupdatingCurrent) {
+        self.locale = locale
+    }
+
+    public var isChinese: Bool {
+        locale.identifier.lowercased().hasPrefix("zh")
+    }
+
+    public var fiveHourLabel: String {
+        isChinese ? "5小时" : "5h"
+    }
+
+    public var weeklyLabel: String {
+        isChinese ? "1周" : "1w"
+    }
+
+    public var resetSoon: String {
+        isChinese ? "即将重置" : "Reset soon"
+    }
+
+    public var unauthenticatedMessage: String {
+        isChinese ? "请先在 Codex 登录" : "Sign in to Codex first"
+    }
+
+    public var unavailableMessage: String {
+        isChinese ? "Codex 用量暂不可用" : "Codex usage unavailable"
+    }
+
+    public var fiveHourTargetWidth: Int {
+        isChinese ? 5 : 3
+    }
+
+    public func resetFormatter(style: ResetStyle, timeZone: TimeZone) -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        formatter.timeZone = timeZone
+        switch style {
+        case .fiveHour:
+            formatter.setLocalizedDateFormatFromTemplate("jmm")
+        case .weekly:
+            formatter.setLocalizedDateFormatFromTemplate("MMMd")
+        }
+        return formatter
+    }
+
+    public enum ResetStyle: Sendable {
+        case fiveHour
+        case weekly
+    }
+}

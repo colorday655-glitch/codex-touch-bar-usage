@@ -6,22 +6,24 @@ public struct WidgetPolicy: Sendable {
     public func output(
         client: any RateLimitFetching,
         cache: UsageCache,
-        now: Date = Date()
+        now: Date = Date(),
+        locale: Locale = .autoupdatingCurrent
     ) async -> String {
+        let localization = CodexLocalization(locale: locale)
         do {
             let snapshot = try await client.fetchRateLimits()
             try? cache.save(CachedUsage(snapshot: snapshot, updatedAt: now))
-            return UsageFormatter(now: now).render(snapshot)
+            return UsageFormatter(now: now, locale: locale).render(snapshot)
         } catch AppServerError.unauthenticated {
-            return "请先在 Codex 登录"
+            return localization.unauthenticatedMessage
         } catch {
             guard
                 let cached = try? cache.load(),
                 cached.isUsable(at: now)
             else {
-                return "Codex 用量暂不可用"
+                return localization.unavailableMessage
             }
-            return UsageFormatter(now: now).render(cached.snapshot, stale: true)
+            return UsageFormatter(now: now, locale: locale).render(cached.snapshot, stale: true)
         }
     }
 }

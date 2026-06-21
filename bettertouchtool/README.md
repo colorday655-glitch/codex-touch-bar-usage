@@ -1,52 +1,44 @@
 # BetterTouchTool Setup
 
-## Prerequisite
+This directory contains the verified BetterTouchTool preset for Codex Touch Bar Usage.
+The widget text follows the system language, with Chinese and English supported.
 
-BetterTouchTool 6.594 is installed at `/Applications/BetterTouchTool.app` on the
-target Mac. Launch it once and grant the permissions requested by the
-application. The project does not use private Apple Touch Bar frameworks;
-BetterTouchTool owns the Touch Bar item.
+## Recommended Setup
 
-## Import The Verified Preset
+Run the repository root setup script first:
 
-1. Run `scripts/install.sh` from this repository.
+```bash
+scripts/setup.sh
+```
+
+That builds and installs the bridge, imports `CodexTouchBarUsage.bttpreset`, and refreshes the widget.
+
+## Manual Setup
+
+If you prefer to import the preset yourself:
+
+1. Run `scripts/install.sh`.
 2. Import `bettertouchtool/CodexTouchBarUsage.bttpreset` in BetterTouchTool.
 3. Enable the imported **Codex Touch Bar Usage** preset.
 
-The preset was imported, restarted, and persistence-tested with BetterTouchTool
-6.594. It contains application-specific Shell Script Widgets for Codex, Terminal,
-and iTerm2. Each Widget runs:
+Each widget runs:
 
 ```bash
 "$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage"
 ```
 
-Periodic refresh is **60 seconds**, with multiline text, a compact font, black
-background, and white text.
-
-The command performs a second activation check. It emits no content unless the
-frontmost app is Codex, or the active Terminal/iTerm TTY has `codex` as its
-foreground process. This prevents an unrelated background Codex process from
-showing the widget.
+The widget is visible only when Codex.app is frontmost or when Codex CLI owns the active terminal session.
 
 ## Expected Output
 
+Chinese system locale:
+
 ```text
-5小时 ▰▰▰▰▱ 81%  4时56分
-本周 ▰▰▰▰▰ 97%  周日
+5小时 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 39%  01:41        1周   🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  6月28日
 ```
 
-The actual percentages and reset labels come from the local Codex app-server.
-A trailing `·` means a cached value is being shown after a transient failure.
+English system locale:
 
-## Verification
-
-Run the bridge directly before configuring the widget:
-
-```bash
-"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage" --force
+```text
+5h 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 39%  1:41 AM        1w   🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  Jun 28
 ```
-
-It should print two rows. Then verify that the normal command is empty outside
-Codex, appears while Codex is frontmost, appears while Codex CLI owns the active
-terminal TTY, and disappears after the terminal returns to the shell.
