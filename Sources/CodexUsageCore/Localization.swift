@@ -32,7 +32,7 @@ public struct CodexLocalization: Sendable {
     }
 
     public var inactivePlaceholder: String {
-        "\u{00A0}"
+        "\u{2060}"
     }
 
     public var fiveHourTargetWidth: Int {
