@@ -31,6 +31,10 @@ public struct CodexLocalization: Sendable {
         isChinese ? "Codex 用量暂不可用" : "Codex usage unavailable"
     }
 
+    public var inactivePlaceholder: String {
+        "\u{00A0}"
+    }
+
     public var fiveHourTargetWidth: Int {
         isChinese ? 5 : 3
     }

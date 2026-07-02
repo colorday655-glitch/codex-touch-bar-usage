@@ -13,6 +13,7 @@ struct CodexUsageMain {
         )
 
         guard force || detector.isCodexActive() else {
+            FileHandle.standardOutput.write(Data(CodexLocalization().inactivePlaceholder.utf8))
             return
         }
 
