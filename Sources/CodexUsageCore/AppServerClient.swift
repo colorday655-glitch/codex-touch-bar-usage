@@ -38,12 +38,11 @@ public struct AppServerClient: RateLimitFetching, Sendable {
         let process = Process()
         let inputPipe = Pipe()
         let outputPipe = Pipe()
-        let errorPipe = Pipe()
         process.executableURL = executableURL
         process.arguments = ["app-server", "--stdio"]
         process.standardInput = inputPipe
         process.standardOutput = outputPipe
-        process.standardError = errorPipe
+        process.standardError = FileHandle.nullDevice
         process.environment = ProcessInfo.processInfo.environment.merging(environment) { _, override in
             override
         }
