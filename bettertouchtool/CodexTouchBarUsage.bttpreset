@@ -23,7 +23,7 @@
           "BTTWidgetWidth": "620",
           "BTTTriggerConfig": {
             "BTTTouchBarShellScriptString": "\"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage\"",
-            "BTTTouchBarScriptUpdateInterval": 60,
+            "BTTTouchBarScriptUpdateInterval": 15,
             "BTTTouchBarItemPlacement": 2,
             "BTTTouchBarItemPadding": 4,
             "BTTTouchBarFreeSpaceAfterButton": "8.000000",
@@ -61,7 +61,7 @@
           "BTTWidgetWidth": "620",
           "BTTTriggerConfig": {
             "BTTTouchBarShellScriptString": "\"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage\"",
-            "BTTTouchBarScriptUpdateInterval": 60,
+            "BTTTouchBarScriptUpdateInterval": 15,
             "BTTTouchBarItemPlacement": 2,
             "BTTTouchBarItemPadding": 4,
             "BTTTouchBarFreeSpaceAfterButton": "8.000000",
@@ -99,7 +99,7 @@
           "BTTWidgetWidth": "620",
           "BTTTriggerConfig": {
             "BTTTouchBarShellScriptString": "\"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage\"",
-            "BTTTouchBarScriptUpdateInterval": 60,
+            "BTTTouchBarScriptUpdateInterval": 15,
             "BTTTouchBarItemPlacement": 2,
             "BTTTouchBarItemPadding": 4,
             "BTTTouchBarFreeSpaceAfterButton": "8.000000",

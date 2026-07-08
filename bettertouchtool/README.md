@@ -12,6 +12,7 @@ scripts/setup.sh
 ```
 
 That builds and installs the bridge, imports `CodexTouchBarUsage.bttpreset`, and refreshes the widget.
+The preset refreshes every 15 seconds by default.
 
 ## Manual Setup
 

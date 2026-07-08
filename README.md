@@ -27,6 +27,9 @@ That script:
 3. Imports the BetterTouchTool preset from `bettertouchtool/CodexTouchBarUsage.bttpreset`.
 4. Refreshes the Touch Bar widget.
 
+The BetterTouchTool preset refreshes every 15 seconds by default so the
+Touch Bar stays close to the live Codex values.
+
 After the script finishes, open BetterTouchTool and enable the imported preset named **Codex Touch Bar Usage**.
 
 ## Manual Install
@@ -79,6 +82,7 @@ If Codex is signed in, the command should print one line. If the widget is not v
 - `请先在 Codex 登录` or `Sign in to Codex first`: open Codex.app and sign in.
 - `Codex 用量暂不可用` or `Codex usage unavailable`: confirm Codex.app is installed at `/Applications`, then retry the forced command.
 - A trailing `·`: the live request failed and a cache no older than five minutes is being shown.
+- If the number still looks behind by a few seconds, wait for the next 15-second refresh cycle.
 - Nothing is printed: this is expected when Codex is not active.
 - If BetterTouchTool does not import the preset automatically, import `bettertouchtool/CodexTouchBarUsage.bttpreset` manually and enable **Codex Touch Bar Usage**.
 
