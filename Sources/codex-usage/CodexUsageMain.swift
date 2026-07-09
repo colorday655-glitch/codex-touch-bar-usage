@@ -17,9 +17,11 @@ struct CodexUsageMain {
             return
         }
 
-        let codexPath = ProcessInfo.processInfo.environment["CODEX_EXECUTABLE"]
-            ?? "/Applications/Codex.app/Contents/Resources/codex"
-        let client = AppServerClient(executableURL: URL(fileURLWithPath: codexPath))
+        guard let codexPath = CodexExecutableLocator().resolve() else {
+            FileHandle.standardOutput.write(Data(CodexLocalization().unavailableMessage.utf8))
+            return
+        }
+        let client = AppServerClient(executableURL: codexPath)
         let output = await WidgetPolicy().output(client: client, cache: UsageCache())
         FileHandle.standardOutput.write(Data(output.utf8))
     }

@@ -28,7 +28,7 @@ Each widget runs:
 "$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage"
 ```
 
-The widget is visible only when Codex.app is frontmost or when Codex CLI owns the active terminal session.
+The widget is visible only when Codex is frontmost or when Codex CLI owns the active terminal session.
 
 ## Expected Output
 

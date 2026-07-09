@@ -8,7 +8,7 @@ It shows the remaining Codex usage for the five-hour window and the weekly windo
 
 - MacBook Pro with a physical Touch Bar.
 - macOS 13 or newer.
-- Codex.app installed and signed in.
+- Codex installed and signed in. The bridge will auto-detect the executable from `CODEX_EXECUTABLE`, `PATH`, `ChatGPT.app`, or `Codex.app`.
 - BetterTouchTool installed at `/Applications/BetterTouchTool.app`.
 - Swift 6.1 or newer if you want to build from source.
 
@@ -79,8 +79,8 @@ If Codex is signed in, the command should print one line. If the widget is not v
 
 ## Troubleshooting
 
-- `请先在 Codex 登录` or `Sign in to Codex first`: open Codex.app and sign in.
-- `Codex 用量暂不可用` or `Codex usage unavailable`: confirm Codex.app is installed at `/Applications`, then retry the forced command.
+- `请先在 Codex 登录` or `Sign in to Codex first`: open Codex and sign in.
+- `Codex 用量暂不可用` or `Codex usage unavailable`: confirm Codex is installed or set `CODEX_EXECUTABLE` to the actual `codex` binary, then retry the forced command.
 - A trailing `·`: the live request failed and a cache no older than five minutes is being shown.
 - If the number still looks behind by a few seconds, wait for the next 15-second refresh cycle.
 - Nothing is printed: this is expected when Codex is not active.
