@@ -75,7 +75,7 @@ Run the bridge directly before configuring BetterTouchTool:
 "$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage" --force
 ```
 
-If Codex is signed in, the command should print one line. If the widget is not visible yet, switch to Codex.app or to a terminal with Codex CLI running in the foreground and wait for the next refresh.
+If Codex is signed in, the command should print one line. If the widget is not visible yet, switch to ChatGPT.app or to a terminal with Codex CLI running in the foreground and wait for the next refresh.
 
 ## Troubleshooting
 

@@ -5,10 +5,10 @@
   "BTTPresetContent": [
     {
       "BTTAppBundleIdentifier": "com.openai.codex",
-      "BTTAppName": "Codex",
+      "BTTAppName": "ChatGPT",
       "BTTAppAutoInvertIcon": 1,
       "BTTAppProcessMatchMode": 2,
-      "BTTAppProcessName": "Codex",
+      "BTTAppProcessName": "ChatGPT",
       "BTTTriggers": [
         {
           "BTTWidgetName": "Codex 用量",

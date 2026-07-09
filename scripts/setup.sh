@@ -20,4 +20,4 @@ fi
 
 printf 'Setup complete.\n'
 printf 'Open BetterTouchTool and enable the imported preset: Codex Touch Bar Usage\n'
-printf 'If the widget is not visible yet, switch to Codex.app and wait for the next refresh.\n'
+printf 'If the widget is not visible yet, switch to ChatGPT.app and wait for the next refresh.\n'
