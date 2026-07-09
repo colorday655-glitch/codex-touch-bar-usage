@@ -31,6 +31,10 @@ public struct CodexLocalization: Sendable {
         isChinese ? "Codex 用量暂不可用" : "Codex usage unavailable"
     }
 
+    public var outdatedReleaseMessage: String {
+        isChinese ? "当前版本已过期，请安装 GitHub 最新版" : "This release is outdated. Install the latest GitHub release."
+    }
+
     public var inactivePlaceholder: String {
         "\u{2060}"
     }
