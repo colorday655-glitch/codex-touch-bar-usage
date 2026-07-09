@@ -32,6 +32,8 @@ Touch Bar stays close to the live Codex values.
 
 After the script finishes, open BetterTouchTool and enable the imported preset named **Codex Touch Bar Usage**.
 
+Only the latest GitHub release is expected to work. Older releases were built before the current ChatGPT app naming change and can fail to display the widget.
+
 ## Manual Install
 
 If you prefer to do the steps yourself:
