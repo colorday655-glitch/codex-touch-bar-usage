@@ -51,6 +51,12 @@ The widget command is:
 "$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage"
 ```
 
+Show the installed version with:
+
+```bash
+"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage" --version
+```
+
 ## Expected Output
 
 The widget renders a single line similar to:

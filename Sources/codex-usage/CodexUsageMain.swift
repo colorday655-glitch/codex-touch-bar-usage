@@ -5,7 +5,13 @@ import Foundation
 @main
 struct CodexUsageMain {
     static func main() async {
-        let force = CommandLine.arguments.contains("--force")
+        let arguments = CommandLine.arguments
+        if arguments.contains("--version") {
+            FileHandle.standardOutput.write(Data((CodexTouchBarVersion.current + "\n").utf8))
+            return
+        }
+
+        let force = arguments.contains("--force")
         let bundleID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
         let detector = ActivationDetector(
             frontmostBundleID: { bundleID },

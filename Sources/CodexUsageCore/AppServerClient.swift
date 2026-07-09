@@ -73,7 +73,7 @@ public struct AppServerClient: RateLimitFetching, Sendable {
 
         let deadline = Date().addingTimeInterval(timeout)
         write(
-            #"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"clientInfo":{"name":"codex-touch-bar","title":"Codex Touch Bar","version":"0.1.0"},"capabilities":{}}}"#,
+            #"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"clientInfo":{"name":"codex-touch-bar","title":"Codex Touch Bar","version":"\#(CodexTouchBarVersion.current)"},"capabilities":{}}}"#,
             to: inputPipe.fileHandleForWriting
         )
         _ = try response(id: 1, from: lines, deadline: deadline)
