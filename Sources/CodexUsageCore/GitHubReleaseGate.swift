@@ -73,7 +73,7 @@ public struct ReleaseGateCache: Sendable {
 
     public init(
         url: URL = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Caches/CodexTouchBar/latest-release.json"),
+            .appendingPathComponent("Library/Caches/CodexTouchBar/latest-release-\(CodexTouchBarVersion.current).json"),
     ) {
         self.url = url
     }
