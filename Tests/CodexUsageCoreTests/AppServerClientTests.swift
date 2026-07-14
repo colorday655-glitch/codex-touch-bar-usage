@@ -23,6 +23,7 @@ struct AppServerClientTests {
 
         #expect(snapshot.primary?.usedPercent == 28)
         #expect(snapshot.secondary?.usedPercent == 56)
+        #expect(snapshot.resetCredits?.availableCount == 2)
     }
 
     @Test("falls back to the compatible snapshot")
@@ -37,6 +38,7 @@ struct AppServerClientTests {
 
         #expect(snapshot.primary?.usedPercent == 31)
         #expect(snapshot.secondary?.usedPercent == 57)
+        #expect(snapshot.resetCredits?.availableCount == 2)
     }
 
     @Test("maps signed-out errors")

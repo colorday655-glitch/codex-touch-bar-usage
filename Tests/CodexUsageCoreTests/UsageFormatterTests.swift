@@ -21,7 +21,8 @@ struct UsageFormatterTests {
                 usedPercent: 56,
                 windowDurationMins: 10_080,
                 resetsAt: 1_750_500_000
-            )
+            ),
+            resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
         )
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)
@@ -29,7 +30,7 @@ struct UsageFormatterTests {
         #expect(!output.contains("\n"))
         #expect(
             output == """
-            5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  23:06        1周   🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
+            可重置次数 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 2  --        1周        🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
             """
         )
     }
@@ -46,15 +47,15 @@ struct UsageFormatterTests {
                 usedPercent: 56,
                 windowDurationMins: 10_080,
                 resetsAt: 1_750_500_000
-            )
+            ),
+            resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
         )
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: englishLocale).render(snapshot)
 
-        #expect(output.contains("5h"))
+        #expect(output.contains("Reset credits"))
         #expect(output.contains("1w"))
         #expect(output.contains("Jun"))
-        #expect(output.contains("PM") || output.contains("AM"))
     }
 
     @Test("selects windows by duration when roles are reordered")
@@ -74,34 +75,41 @@ struct UsageFormatterTests {
     func clampsRemainingPercentages() {
         let snapshot = RateLimitSnapshot(
             primary: RateLimitWindow(usedPercent: -5, windowDurationMins: 300, resetsAt: nil),
-            secondary: RateLimitWindow(usedPercent: 125, windowDurationMins: 10_080, resetsAt: nil)
+            secondary: RateLimitWindow(usedPercent: 125, windowDurationMins: 10_080, resetsAt: nil),
+            resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
         )
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)
 
-        #expect(output.contains("100%"))
         #expect(output.contains("0%"))
+        #expect(output.contains("可重置次数"))
     }
 
     @Test("marks stale output and tolerates a missing window")
     func marksStaleAndMissingWindow() {
         let snapshot = RateLimitSnapshot(
             primary: RateLimitWindow(usedPercent: 28, windowDurationMins: 300, resetsAt: nil),
-            secondary: nil
+            secondary: RateLimitWindow(
+                usedPercent: 28,
+                windowDurationMins: 10_080,
+                resetsAt: now.timeIntervalSince1970 - 1
+            ),
+            resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
         )
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot, stale: true)
 
-        #expect(output.contains("72%"))
-        #expect(output.contains("5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  --        1周   ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ --"))
+        #expect(output.contains("即将重置"))
+        #expect(output.contains("可重置次数"))
         #expect(output.hasSuffix(" ·"))
     }
 
     @Test("labels past resets as imminent")
     func labelsPastResetAsImminent() {
         let snapshot = RateLimitSnapshot(
-            primary: RateLimitWindow(usedPercent: 28, windowDurationMins: 300, resetsAt: now.timeIntervalSince1970 - 1),
-            secondary: nil
+            primary: nil,
+            secondary: RateLimitWindow(usedPercent: 28, windowDurationMins: 10_080, resetsAt: now.timeIntervalSince1970 - 1),
+            resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
         )
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)

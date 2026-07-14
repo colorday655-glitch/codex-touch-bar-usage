@@ -11,8 +11,8 @@ public struct CodexLocalization: Sendable {
         locale.identifier.lowercased().hasPrefix("zh")
     }
 
-    public var fiveHourLabel: String {
-        isChinese ? "5小时" : "5h"
+    public var resetCreditsLabel: String {
+        isChinese ? "可重置次数" : "Reset credits"
     }
 
     public var weeklyLabel: String {
@@ -39,8 +39,8 @@ public struct CodexLocalization: Sendable {
         "\u{2060}"
     }
 
-    public var fiveHourTargetWidth: Int {
-        isChinese ? 5 : 3
+    public var firstColumnTargetWidth: Int {
+        isChinese ? 10 : 13
     }
 
     public func resetFormatter(style: ResetStyle, timeZone: TimeZone) -> DateFormatter {

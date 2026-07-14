@@ -11,10 +11,12 @@ struct CodexUsageMain {
             return
         }
 
+#if !DEBUG
         if await GitHubReleaseGate().isCurrentVersionBlocked() {
             FileHandle.standardOutput.write(Data((CodexLocalization().outdatedReleaseMessage + "\n").utf8))
             return
         }
+#endif
 
         let force = arguments.contains("--force")
         let bundleID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier

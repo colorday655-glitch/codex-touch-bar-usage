@@ -16,13 +16,57 @@ public struct RateLimitWindow: Codable, Equatable, Sendable {
     }
 }
 
+public struct RateLimitResetCredits: Codable, Equatable, Sendable {
+    public let availableCount: Int
+    public let credits: [RateLimitResetCredit]?
+
+    public init(availableCount: Int, credits: [RateLimitResetCredit]?) {
+        self.availableCount = availableCount
+        self.credits = credits
+    }
+}
+
+public struct RateLimitResetCredit: Codable, Equatable, Sendable {
+    public let id: String
+    public let resetType: String
+    public let status: String
+    public let grantedAt: TimeInterval
+    public let expiresAt: TimeInterval?
+    public let title: String?
+    public let description: String?
+
+    public init(
+        id: String,
+        resetType: String,
+        status: String,
+        grantedAt: TimeInterval,
+        expiresAt: TimeInterval?,
+        title: String?,
+        description: String?
+    ) {
+        self.id = id
+        self.resetType = resetType
+        self.status = status
+        self.grantedAt = grantedAt
+        self.expiresAt = expiresAt
+        self.title = title
+        self.description = description
+    }
+}
+
 public struct RateLimitSnapshot: Codable, Equatable, Sendable {
     public let primary: RateLimitWindow?
     public let secondary: RateLimitWindow?
+    public let resetCredits: RateLimitResetCredits?
 
-    public init(primary: RateLimitWindow?, secondary: RateLimitWindow?) {
+    public init(
+        primary: RateLimitWindow?,
+        secondary: RateLimitWindow?,
+        resetCredits: RateLimitResetCredits? = nil
+    ) {
         self.primary = primary
         self.secondary = secondary
+        self.resetCredits = resetCredits
     }
 
     public func selectedWindows() -> (

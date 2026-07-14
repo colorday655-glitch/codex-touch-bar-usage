@@ -121,6 +121,7 @@ public struct AppServerClient: RateLimitFetching, Sendable {
         guard let result = object["result"] as? [String: Any] else {
             throw AppServerError.invalidResponse
         }
+        let resetCreditsObject = result["rateLimitResetCredits"]
         let snapshotObject: Any?
         if
             let buckets = result["rateLimitsByLimitId"] as? [String: Any],
@@ -134,7 +135,19 @@ public struct AppServerClient: RateLimitFetching, Sendable {
             throw AppServerError.invalidResponse
         }
         let snapshotData = try JSONSerialization.data(withJSONObject: snapshotObject)
-        return try JSONDecoder().decode(RateLimitSnapshot.self, from: snapshotData)
+        let primarySnapshot = try JSONDecoder().decode(RateLimitSnapshot.self, from: snapshotData)
+        let resetCredits = try decodeResetCredits(from: resetCreditsObject)
+        return RateLimitSnapshot(
+            primary: primarySnapshot.primary,
+            secondary: primarySnapshot.secondary,
+            resetCredits: resetCredits
+        )
+    }
+
+    private func decodeResetCredits(from object: Any?) throws -> RateLimitResetCredits? {
+        guard let object else { return nil }
+        let data = try JSONSerialization.data(withJSONObject: object)
+        return try JSONDecoder().decode(RateLimitResetCredits.self, from: data)
     }
 }
 

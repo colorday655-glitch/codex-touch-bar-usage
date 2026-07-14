@@ -9,7 +9,8 @@ struct WidgetPolicyTests {
     private let englishLocale = Locale(identifier: "en_US")
     private let snapshot = RateLimitSnapshot(
         primary: RateLimitWindow(usedPercent: 28, windowDurationMins: 300, resetsAt: 2_000),
-        secondary: RateLimitWindow(usedPercent: 56, windowDurationMins: 10_080, resetsAt: 3_000)
+        secondary: RateLimitWindow(usedPercent: 56, windowDurationMins: 10_080, resetsAt: 3_000),
+        resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
     )
 
     @Test("formats and caches a successful refresh")
@@ -22,8 +23,8 @@ struct WidgetPolicyTests {
             locale: chineseLocale
         )
 
-        #expect(output.contains("72%"))
         #expect(output.contains("44%"))
+        #expect(output.contains("可重置次数"))
         #expect(try cache.load()?.snapshot == snapshot)
     }
 
@@ -40,7 +41,8 @@ struct WidgetPolicyTests {
         )
 
         #expect(output.hasSuffix(" ·"))
-        #expect(output.contains("72%"))
+        #expect(output.contains("可重置次数"))
+        #expect(output.contains("44%"))
     }
 
     @Test("does not use an expired cache")

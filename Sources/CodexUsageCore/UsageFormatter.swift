@@ -18,13 +18,24 @@ public struct UsageFormatter: Sendable {
     public func render(_ snapshot: RateLimitSnapshot, stale: Bool = false) -> String {
         let selected = snapshot.selectedWindows()
         var rows = [
-            row(label: localization.fiveHourLabel, window: selected.fiveHour, resetStyle: .fiveHour),
+            resetCreditRow(snapshot.resetCredits),
             row(label: localization.weeklyLabel, window: selected.weekly, resetStyle: .weekly),
         ]
         if stale {
             rows[rows.count - 1] += " ·"
         }
         return rows.joined(separator: "        ")
+    }
+
+    private func resetCreditRow(_ resetCredits: RateLimitResetCredits?) -> String {
+        guard let availableCount = resetCredits?.availableCount else {
+            return "\(paddedLabel(localization.resetCreditsLabel)) \(emptyBar) --"
+        }
+
+        let filledCount = min(10, max(0, availableCount))
+        let bar = String(repeating: "🟩", count: filledCount)
+            + String(repeating: "⬜", count: 10 - filledCount)
+        return "\(paddedLabel(localization.resetCreditsLabel)) \(bar) \(availableCount)  --"
     }
 
     private func row(label: String, window: RateLimitWindow?, resetStyle: CodexLocalization.ResetStyle) -> String {
@@ -46,7 +57,7 @@ public struct UsageFormatter: Sendable {
     }
 
     private func paddedLabel(_ label: String) -> String {
-        let targetWidth = localization.fiveHourTargetWidth
+        let targetWidth = localization.firstColumnTargetWidth
         let currentWidth = label.displayWidth
         guard currentWidth < targetWidth else { return label }
         return label + String(repeating: " ", count: targetWidth - currentWidth)

@@ -2,7 +2,7 @@
 
 Open-source Touch Bar display for the Codex desktop app and Codex CLI on a MacBook Pro with a physical Touch Bar.
 
-It shows the remaining Codex usage for the five-hour window and the weekly window, and only appears while Codex is active or while Codex CLI owns the foreground terminal session. The visible labels and reset timestamps follow the system language, with Chinese and English supported out of the box.
+It shows the available earned reset credits and the weekly window, and only appears while Codex is active or while Codex CLI owns the foreground terminal session. The visible labels and reset timestamps follow the system language, with Chinese and English supported out of the box.
 
 ## Requirements
 
@@ -64,13 +64,13 @@ The widget renders a single line similar to:
 Chinese system locale:
 
 ```text
-5小时 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 39%  01:41        1周   🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  6月28日
+可重置次数 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 2  --        1周        🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  6月28日
 ```
 
 English system locale:
 
 ```text
-5h 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 39%  1:41 AM        1w   🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  Jun 28
+Reset credits 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 2  --        1w             🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  Jun 28
 ```
 
 The exact percentages and reset times come from the local Codex app-server.
