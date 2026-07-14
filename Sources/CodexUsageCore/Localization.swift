@@ -15,6 +15,18 @@ public struct CodexLocalization: Sendable {
         isChinese ? "可重置次数" : "Reset credits"
     }
 
+    public var resetCreditsUnit: String {
+        isChinese ? "次" : "x"
+    }
+
+    public var resetCreditsAvailable: String {
+        isChinese ? "可用" : "Available"
+    }
+
+    public var resetCreditsUsedUp: String {
+        isChinese ? "已用完" : "Used up"
+    }
+
     public var weeklyLabel: String {
         isChinese ? "1周" : "1w"
     }
