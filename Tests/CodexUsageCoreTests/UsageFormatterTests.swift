@@ -22,7 +22,20 @@ struct UsageFormatterTests {
                 windowDurationMins: 10_080,
                 resetsAt: 1_750_500_000
             ),
-            resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
+            resetCredits: RateLimitResetCredits(
+                availableCount: 2,
+                credits: [
+                    RateLimitResetCredit(
+                        id: "RateLimitResetCredit_1",
+                        resetType: "codexRateLimits",
+                        status: "available",
+                        grantedAt: 1_781_654_400,
+                        expiresAt: 1_784_246_400,
+                        title: "Full reset (Weekly + 5 hr)",
+                        description: "Ready to redeem"
+                    )
+                ]
+            )
         )
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)
@@ -30,7 +43,7 @@ struct UsageFormatterTests {
         #expect(!output.contains("\n"))
         #expect(
             output == """
-            可重置次数 🟩 2次 🟦 可用        1周        🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
+            可重置次数 2次 可用 · 到期 7月17日 08:00        1周        🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
             """
         )
     }

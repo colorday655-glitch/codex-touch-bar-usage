@@ -29,10 +29,15 @@ public struct UsageFormatter: Sendable {
 
     private func resetCreditRow(_ resetCredits: RateLimitResetCredits?) -> String {
         guard let availableCount = resetCredits?.availableCount else {
-            return "\(paddedLabel(localization.resetCreditsLabel)) \(creditBadge(nil)) \(statusBadge(nil))"
+            return "\(paddedLabel(localization.resetCreditsLabel)) \(creditText(0)) \(statusText(false))"
         }
 
-        return "\(paddedLabel(localization.resetCreditsLabel)) \(creditBadge(availableCount)) \(statusBadge(availableCount))"
+        let status = statusText(availableCount > 0)
+        let expiration = resetCredits?.credits?.compactMap(\.expiresAt).min().flatMap { expirationDescription($0) }
+        if let expiration {
+            return "\(paddedLabel(localization.resetCreditsLabel)) \(creditText(availableCount)) \(status) · \(expiration)"
+        }
+        return "\(paddedLabel(localization.resetCreditsLabel)) \(creditText(availableCount)) \(status)"
     }
 
     private func row(label: String, window: RateLimitWindow?, resetStyle: CodexLocalization.ResetStyle) -> String {
@@ -53,17 +58,19 @@ public struct UsageFormatter: Sendable {
         String(repeating: "⬜", count: 10)
     }
 
-    private func creditBadge(_ availableCount: Int?) -> String {
-        let count = availableCount ?? 0
-        let color = (availableCount ?? 0) > 0 ? localization.resetCreditsBadgeAvailable : localization.resetCreditsBadgeUsedUp
-        return "\(color) \(count)\(localization.resetCreditsUnit)"
+    private func creditText(_ availableCount: Int) -> String {
+        "\(availableCount)\(localization.resetCreditsUnit)"
     }
 
-    private func statusBadge(_ availableCount: Int?) -> String {
-        let hasCredits = (availableCount ?? 0) > 0
-        let color = hasCredits ? localization.resetCreditsStatusBadgeAvailable : localization.resetCreditsStatusBadgeUsedUp
-        let text = hasCredits ? localization.resetCreditsAvailable : localization.resetCreditsUsedUp
-        return "\(color) \(text)"
+    private func statusText(_ hasCredits: Bool) -> String {
+        hasCredits ? localization.resetCreditsAvailable : localization.resetCreditsUsedUp
+    }
+
+    private func expirationDescription(_ timestamp: TimeInterval) -> String? {
+        let expirationDate = Date(timeIntervalSince1970: timestamp)
+        let interval = expirationDate.timeIntervalSince(now)
+        guard interval > 0 else { return nil }
+        return "\(localization.resetCreditsExpiresPrefix) \(localization.creditExpirationFormatter(timeZone: timeZone).string(from: expirationDate))"
     }
 
     private func paddedLabel(_ label: String) -> String {

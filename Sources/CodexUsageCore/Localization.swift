@@ -27,20 +27,8 @@ public struct CodexLocalization: Sendable {
         isChinese ? "已用完" : "Used up"
     }
 
-    public var resetCreditsBadgeAvailable: String {
-        "🟩"
-    }
-
-    public var resetCreditsBadgeUsedUp: String {
-        "🟥"
-    }
-
-    public var resetCreditsStatusBadgeAvailable: String {
-        "🟦"
-    }
-
-    public var resetCreditsStatusBadgeUsedUp: String {
-        "⬜"
+    public var resetCreditsExpiresPrefix: String {
+        isChinese ? "到期" : "Expires"
     }
 
     public var weeklyLabel: String {
@@ -81,6 +69,14 @@ public struct CodexLocalization: Sendable {
         case .weekly:
             formatter.setLocalizedDateFormatFromTemplate("MMMd")
         }
+        return formatter
+    }
+
+    public func creditExpirationFormatter(timeZone: TimeZone) -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        formatter.timeZone = timeZone
+        formatter.setLocalizedDateFormatFromTemplate("MMMdjmm")
         return formatter
     }
 
