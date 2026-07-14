@@ -27,6 +27,22 @@ public struct CodexLocalization: Sendable {
         isChinese ? "已用完" : "Used up"
     }
 
+    public var resetCreditsBadgeAvailable: String {
+        "🟩"
+    }
+
+    public var resetCreditsBadgeUsedUp: String {
+        "🟥"
+    }
+
+    public var resetCreditsStatusBadgeAvailable: String {
+        "🟦"
+    }
+
+    public var resetCreditsStatusBadgeUsedUp: String {
+        "⬜"
+    }
+
     public var weeklyLabel: String {
         isChinese ? "1周" : "1w"
     }

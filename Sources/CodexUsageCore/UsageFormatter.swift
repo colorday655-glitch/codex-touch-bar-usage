@@ -29,14 +29,10 @@ public struct UsageFormatter: Sendable {
 
     private func resetCreditRow(_ resetCredits: RateLimitResetCredits?) -> String {
         guard let availableCount = resetCredits?.availableCount else {
-            return "\(paddedLabel(localization.resetCreditsLabel)) \(emptyCreditBadge) \(emptyCreditDots) --"
+            return "\(paddedLabel(localization.resetCreditsLabel)) \(creditBadge(nil)) \(statusBadge(nil))"
         }
 
-        let filledCount = min(5, max(0, availableCount))
-        let dots = creditDots(filledCount: filledCount)
-        let countText = "\(availableCount)\(localization.resetCreditsUnit)"
-        let status = availableCount > 0 ? localization.resetCreditsAvailable : localization.resetCreditsUsedUp
-        return "\(paddedLabel(localization.resetCreditsLabel)) \(countText) \(dots) \(status)"
+        return "\(paddedLabel(localization.resetCreditsLabel)) \(creditBadge(availableCount)) \(statusBadge(availableCount))"
     }
 
     private func row(label: String, window: RateLimitWindow?, resetStyle: CodexLocalization.ResetStyle) -> String {
@@ -57,17 +53,17 @@ public struct UsageFormatter: Sendable {
         String(repeating: "⬜", count: 10)
     }
 
-    private var emptyCreditBadge: String {
-        "0\(localization.resetCreditsUnit)"
+    private func creditBadge(_ availableCount: Int?) -> String {
+        let count = availableCount ?? 0
+        let color = (availableCount ?? 0) > 0 ? localization.resetCreditsBadgeAvailable : localization.resetCreditsBadgeUsedUp
+        return "\(color) \(count)\(localization.resetCreditsUnit)"
     }
 
-    private var emptyCreditDots: String {
-        creditDots(filledCount: 0)
-    }
-
-    private func creditDots(filledCount: Int) -> String {
-        String(repeating: "●", count: filledCount)
-            + String(repeating: "○", count: 5 - filledCount)
+    private func statusBadge(_ availableCount: Int?) -> String {
+        let hasCredits = (availableCount ?? 0) > 0
+        let color = hasCredits ? localization.resetCreditsStatusBadgeAvailable : localization.resetCreditsStatusBadgeUsedUp
+        let text = hasCredits ? localization.resetCreditsAvailable : localization.resetCreditsUsedUp
+        return "\(color) \(text)"
     }
 
     private func paddedLabel(_ label: String) -> String {

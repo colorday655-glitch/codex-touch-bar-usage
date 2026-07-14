@@ -64,13 +64,13 @@ The widget renders a single line similar to:
 Chinese system locale:
 
 ```text
-可重置次数 2次 ●●○○○ 可用        1周        🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  6月28日
+可重置次数 🟩 2次 🟦 可用        1周        🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  6月28日
 ```
 
 English system locale:
 
 ```text
-Reset credits 2x ●●○○○ Available        1w             🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  Jun 28
+Reset credits 🟩 2x 🟦 Available        1w             🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 55%  Jun 28
 ```
 
 The exact percentages and reset times come from the local Codex app-server.
