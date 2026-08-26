@@ -43,7 +43,7 @@ struct UsageFormatterTests {
         #expect(!output.contains("\n"))
         #expect(
             output == """
-            可重置次数 2次 可用 · 到期 7月17日 08:00        1周        🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
+            5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  23:06    1周 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
             """
         )
     }
@@ -66,8 +66,7 @@ struct UsageFormatterTests {
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: englishLocale).render(snapshot)
 
-        #expect(output.contains("Reset credits"))
-        #expect(output.contains("2x"))
+        #expect(output.contains("5h"))
         #expect(output.contains("1w"))
         #expect(output.contains("Jun"))
     }
@@ -95,8 +94,8 @@ struct UsageFormatterTests {
 
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot)
 
-        #expect(output.contains("2次"))
-        #expect(output.contains("可重置次数"))
+        #expect(output.contains("5小时"))
+        #expect(output.contains("100%"))
     }
 
     @Test("marks stale output and tolerates a missing window")
@@ -114,7 +113,7 @@ struct UsageFormatterTests {
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale).render(snapshot, stale: true)
 
         #expect(output.contains("即将重置"))
-        #expect(output.contains("可重置次数"))
+        #expect(output.contains("5小时"))
         #expect(output.hasSuffix(" ·"))
     }
 

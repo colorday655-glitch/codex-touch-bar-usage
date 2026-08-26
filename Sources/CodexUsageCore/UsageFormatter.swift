@@ -18,31 +18,18 @@ public struct UsageFormatter: Sendable {
     public func render(_ snapshot: RateLimitSnapshot, stale: Bool = false) -> String {
         let selected = snapshot.selectedWindows()
         var rows = [
-            resetCreditRow(snapshot.resetCredits),
+            row(label: localization.fiveHourLabel, window: selected.fiveHour, resetStyle: .fiveHour),
             row(label: localization.weeklyLabel, window: selected.weekly, resetStyle: .weekly),
         ]
         if stale {
             rows[rows.count - 1] += " ·"
         }
-        return rows.joined(separator: "        ")
-    }
-
-    private func resetCreditRow(_ resetCredits: RateLimitResetCredits?) -> String {
-        guard let availableCount = resetCredits?.availableCount else {
-            return "\(paddedLabel(localization.resetCreditsLabel)) \(creditText(0)) \(statusText(false))"
-        }
-
-        let status = statusText(availableCount > 0)
-        let expiration = resetCredits?.credits?.compactMap(\.expiresAt).min().flatMap { expirationDescription($0) }
-        if let expiration {
-            return "\(paddedLabel(localization.resetCreditsLabel)) \(creditText(availableCount)) \(status) · \(expiration)"
-        }
-        return "\(paddedLabel(localization.resetCreditsLabel)) \(creditText(availableCount)) \(status)"
+        return rows.joined(separator: "    ")
     }
 
     private func row(label: String, window: RateLimitWindow?, resetStyle: CodexLocalization.ResetStyle) -> String {
         guard let window, let usedPercent = window.usedPercent, usedPercent.isFinite else {
-            return "\(paddedLabel(label)) \(emptyBar) --"
+            return "\(label) \(emptyBar) --"
         }
 
         let remaining = min(100, max(0, 100 - usedPercent))
@@ -51,33 +38,11 @@ public struct UsageFormatter: Sendable {
             + String(repeating: "⬜", count: 10 - filledCount)
         let percentage = Int(remaining.rounded())
         let reset = resetDescription(window.resetsAt, style: resetStyle) ?? "--"
-        return "\(paddedLabel(label)) \(bar) \(percentage)%  \(reset)"
+        return "\(label) \(bar) \(percentage)%  \(reset)"
     }
 
     private var emptyBar: String {
         String(repeating: "⬜", count: 10)
-    }
-
-    private func creditText(_ availableCount: Int) -> String {
-        "\(availableCount)\(localization.resetCreditsUnit)"
-    }
-
-    private func statusText(_ hasCredits: Bool) -> String {
-        hasCredits ? localization.resetCreditsAvailable : localization.resetCreditsUsedUp
-    }
-
-    private func expirationDescription(_ timestamp: TimeInterval) -> String? {
-        let expirationDate = Date(timeIntervalSince1970: timestamp)
-        let interval = expirationDate.timeIntervalSince(now)
-        guard interval > 0 else { return nil }
-        return "\(localization.resetCreditsExpiresPrefix) \(localization.creditExpirationFormatter(timeZone: timeZone).string(from: expirationDate))"
-    }
-
-    private func paddedLabel(_ label: String) -> String {
-        let targetWidth = localization.firstColumnTargetWidth
-        let currentWidth = label.displayWidth
-        guard currentWidth < targetWidth else { return label }
-        return label + String(repeating: " ", count: targetWidth - currentWidth)
     }
 
     private func resetDescription(_ timestamp: TimeInterval?, style: CodexLocalization.ResetStyle) -> String? {

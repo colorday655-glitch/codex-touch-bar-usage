@@ -35,6 +35,10 @@ public struct CodexLocalization: Sendable {
         isChinese ? "1周" : "1w"
     }
 
+    public var fiveHourLabel: String {
+        isChinese ? "5小时" : "5h"
+    }
+
     public var resetSoon: String {
         isChinese ? "即将重置" : "Reset soon"
     }

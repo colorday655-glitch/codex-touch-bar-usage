@@ -24,7 +24,7 @@ struct WidgetPolicyTests {
         )
 
         #expect(output.contains("44%"))
-        #expect(output.contains("可重置次数"))
+        #expect(output.contains("5小时"))
         #expect(try cache.load()?.snapshot == snapshot)
     }
 
@@ -41,7 +41,7 @@ struct WidgetPolicyTests {
         )
 
         #expect(output.hasSuffix(" ·"))
-        #expect(output.contains("可重置次数"))
+        #expect(output.contains("5小时"))
         #expect(output.contains("44%"))
     }
 
