@@ -24,7 +24,8 @@ public struct UsageFormatter: Sendable {
         if stale {
             rows[rows.count - 1] += " ·"
         }
-        return rows.joined(separator: "    ")
+        let resetCredits = localization.resetCreditsText(snapshot.resetCredits?.availableCount ?? 0)
+        return ([resetCredits] + rows).joined(separator: "    ")
     }
 
     private func row(label: String, window: RateLimitWindow?, resetStyle: CodexLocalization.ResetStyle) -> String {

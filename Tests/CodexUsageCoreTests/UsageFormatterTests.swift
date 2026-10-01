@@ -43,7 +43,7 @@ struct UsageFormatterTests {
         #expect(!output.contains("\n"))
         #expect(
             output == """
-            5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  23:06    1周 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
+            2次可重置    5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  23:06    1周 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
             """
         )
     }
@@ -67,6 +67,7 @@ struct UsageFormatterTests {
         let output = UsageFormatter(now: now, timeZone: timeZone, locale: englishLocale).render(snapshot)
 
         #expect(output.contains("5h"))
+        #expect(output.contains("2x reset"))
         #expect(output.contains("1w"))
         #expect(output.contains("Jun"))
     }

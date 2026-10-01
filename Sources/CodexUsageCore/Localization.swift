@@ -19,6 +19,10 @@ public struct CodexLocalization: Sendable {
         isChinese ? "次" : "x"
     }
 
+    public func resetCreditsText(_ count: Int) -> String {
+        isChinese ? "\(count)次可重置" : "\(count)x reset"
+    }
+
     public var resetCreditsAvailable: String {
         isChinese ? "可用" : "Available"
     }
