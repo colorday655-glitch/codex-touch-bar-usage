@@ -36,4 +36,14 @@ struct CodexExecutableLocatorTests {
 
         #expect(locator.resolve() == executable)
     }
+
+    @Test("finds the bundled Codex CLI inside ChatGPT")
+    func findsBundledCodexCLI() {
+        let bundled = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
+        guard FileManager.default.isExecutableFile(atPath: bundled) else { return }
+
+        let locator = CodexExecutableLocator(environment: ["PATH": ""])
+
+        #expect(locator.resolve()?.path == bundled)
+    }
 }

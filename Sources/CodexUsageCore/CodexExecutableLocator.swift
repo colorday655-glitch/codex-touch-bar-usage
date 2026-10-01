@@ -46,9 +46,17 @@ public struct CodexExecutableLocator: Sendable {
     }
 
     private static let candidatePaths = [
+        "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+        "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
         "/Applications/ChatGPT.app/Contents/Resources/codex",
+        "/Applications/Codex.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+        "/Applications/Codex.app/Contents/Resources/codex-cli/bin/codex",
         "/Applications/Codex.app/Contents/Resources/codex",
+        "\(NSHomeDirectory())/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+        "\(NSHomeDirectory())/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
         "\(NSHomeDirectory())/Applications/ChatGPT.app/Contents/Resources/codex",
+        "\(NSHomeDirectory())/Applications/Codex.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+        "\(NSHomeDirectory())/Applications/Codex.app/Contents/Resources/codex-cli/bin/codex",
         "\(NSHomeDirectory())/Applications/Codex.app/Contents/Resources/codex",
     ]
 }
