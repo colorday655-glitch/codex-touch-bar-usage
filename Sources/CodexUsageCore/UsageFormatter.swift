@@ -38,8 +38,13 @@ public struct UsageFormatter: Sendable {
         let bar = String(repeating: "🟩", count: filledCount)
             + String(repeating: "⬜", count: 10 - filledCount)
         let percentage = Int(remaining.rounded())
-        let reset = resetDescription(window.resetsAt, style: resetStyle) ?? "--"
-        return "\(label) \(bar) \(percentage)%  \(reset)"
+        switch resetStyle {
+        case .fiveHour:
+            let reset = resetDescription(window.resetsAt, style: resetStyle) ?? "--"
+            return "\(label) \(bar) \(percentage)%  \(reset)"
+        case .weekly:
+            return "\(label) \(bar) \(percentage)%"
+        }
     }
 
     private var emptyBar: String {

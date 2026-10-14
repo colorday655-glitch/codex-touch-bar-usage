@@ -43,7 +43,7 @@ struct UsageFormatterTests {
         #expect(!output.contains("\n"))
         #expect(
             output == """
-            2次可重置    5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  23:06    1周 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%  6月21日
+            2次可重置    5小时 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 72%  23:06    1周 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ 44%
             """
         )
     }
@@ -69,7 +69,7 @@ struct UsageFormatterTests {
         #expect(output.contains("5h"))
         #expect(output.contains("2x reset"))
         #expect(output.contains("1w"))
-        #expect(output.contains("Jun"))
+        #expect(output.contains("11:06"))
     }
 
     @Test("selects windows by duration when roles are reordered")
@@ -102,7 +102,11 @@ struct UsageFormatterTests {
     @Test("marks stale output and tolerates a missing window")
     func marksStaleAndMissingWindow() {
         let snapshot = RateLimitSnapshot(
-            primary: RateLimitWindow(usedPercent: 28, windowDurationMins: 300, resetsAt: nil),
+            primary: RateLimitWindow(
+                usedPercent: 28,
+                windowDurationMins: 300,
+                resetsAt: now.timeIntervalSince1970 - 1
+            ),
             secondary: RateLimitWindow(
                 usedPercent: 28,
                 windowDurationMins: 10_080,
@@ -121,7 +125,11 @@ struct UsageFormatterTests {
     @Test("labels past resets as imminent")
     func labelsPastResetAsImminent() {
         let snapshot = RateLimitSnapshot(
-            primary: nil,
+            primary: RateLimitWindow(
+                usedPercent: 28,
+                windowDurationMins: 300,
+                resetsAt: now.timeIntervalSince1970 - 1
+            ),
             secondary: RateLimitWindow(usedPercent: 28, windowDurationMins: 10_080, resetsAt: now.timeIntervalSince1970 - 1),
             resetCredits: RateLimitResetCredits(availableCount: 2, credits: nil)
         )
