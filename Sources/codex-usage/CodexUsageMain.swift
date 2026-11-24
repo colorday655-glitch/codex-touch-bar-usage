@@ -25,17 +25,30 @@ struct CodexUsageMain {
             foregroundTTYCommand: { SystemProbe.foregroundTerminalCommand(bundleID: bundleID) }
         )
 
-        guard force || detector.isCodexActive() else {
+        let antigravityActive = detector.isAntigravityActive()
+        guard force || detector.isCodexActive() || antigravityActive else {
             FileHandle.standardOutput.write(Data(CodexLocalization().inactivePlaceholder.utf8))
             return
         }
 
-        guard let codexPath = CodexExecutableLocator().resolve() else {
-            FileHandle.standardOutput.write(Data(CodexLocalization().unavailableMessage.utf8))
-            return
+        let output: String
+        if antigravityActive {
+            let cache = UsageCache(fileURL: UsageCache.defaultFileURL(product: .gemini))
+            output = await WidgetPolicy().output(
+                client: GeminiUsageClient(),
+                cache: cache,
+                showResetCredits: false
+            )
+        } else {
+            guard let codexPath = CodexExecutableLocator().resolve() else {
+                FileHandle.standardOutput.write(Data(CodexLocalization().unavailableMessage.utf8))
+                return
+            }
+            output = await WidgetPolicy().output(
+                client: AppServerClient(executableURL: codexPath),
+                cache: UsageCache()
+            )
         }
-        let client = AppServerClient(executableURL: codexPath)
-        let output = await WidgetPolicy().output(client: client, cache: UsageCache())
         FileHandle.standardOutput.write(Data(output.utf8))
     }
 }

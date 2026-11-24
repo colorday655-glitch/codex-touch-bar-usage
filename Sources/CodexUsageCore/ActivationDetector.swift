@@ -25,5 +25,9 @@ public struct ActivationDetector: Sendable {
             .lastPathComponent
         return executable == "codex"
     }
+
+    public func isAntigravityActive() -> Bool {
+        frontmostBundleID() == "com.google.antigravity"
+    }
 }
 

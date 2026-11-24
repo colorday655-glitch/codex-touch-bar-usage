@@ -3,6 +3,17 @@ import Testing
 
 @Suite("Codex activation detection")
 struct ActivationDetectorTests {
+    @Test("activates for Antigravity desktop")
+    func antigravityDesktopIsActive() {
+        let detector = ActivationDetector(
+            frontmostBundleID: { "com.google.antigravity" },
+            foregroundTTYCommand: { nil }
+        )
+
+        #expect(detector.isAntigravityActive())
+        #expect(!detector.isCodexActive())
+    }
+
     @Test("activates for Codex desktop")
     func codexDesktopIsActive() {
         let detector = ActivationDetector(
