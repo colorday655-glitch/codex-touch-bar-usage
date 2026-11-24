@@ -116,6 +116,44 @@
           }
         }
       ]
+    },
+    {
+      "BTTAppBundleIdentifier": "com.google.antigravity",
+      "BTTAppName": "Antigravity",
+      "BTTAppAutoInvertIcon": 1,
+      "BTTAppProcessMatchMode": 2,
+      "BTTAppProcessName": "Antigravity",
+      "BTTTriggers": [
+        {
+          "BTTWidgetName": "Gemini 用量",
+          "BTTTriggerType": 642,
+          "BTTTriggerTypeDescription": "Shell Script / Task Widget",
+          "BTTTriggerClass": "BTTTriggerTypeTouchBar",
+          "BTTShellScriptWidgetGestureConfig": "/bin/bash:::-c",
+          "BTTEnabled2": 1,
+          "BTTUUID": "D8E6B1A8-3AF9-4D88-9D43-7D9B37C04E72",
+          "BTTEnabled": 1,
+          "BTTOrder": 1,
+          "BTTWidgetWidth": "620",
+          "BTTTriggerConfig": {
+            "BTTTouchBarShellScriptString": "\"$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage\"",
+            "BTTTouchBarScriptUpdateInterval": 15,
+            "BTTTouchBarItemPlacement": 2,
+            "BTTTouchBarItemPadding": 4,
+            "BTTTouchBarFreeSpaceAfterButton": "8.000000",
+            "BTTTouchBarButtonColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarAlternateBackgroundColor": "0.000000, 0.000000, 0.000000, 255.000000",
+            "BTTTouchBarFontColor": "255.000000, 255.000000, 255.000000, 255.000000",
+            "BTTTouchBarButtonFontSize": 12,
+            "BTTTouchBarButtonFontSizeLine2": 12,
+            "BTTTouchBarButtonUseFixedWidth": 1,
+            "BTTTouchBarButtonLineHeight": 18,
+            "BTTTouchBarButtonWidth": 620,
+            "BTTTouchBarUseMonoSpacedFont": 1,
+            "BTTTouchBarAlwaysShowButton": "0"
+          }
+        }
+      ]
     }
   ]
 }

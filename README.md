@@ -1,14 +1,15 @@
-# Codex Touch Bar Usage
+# Codex & Gemini Touch Bar Usage
 
-Open-source Touch Bar display for the Codex desktop app and Codex CLI on a MacBook Pro with a physical Touch Bar.
+Open-source Touch Bar display for Codex and Google Antigravity on a MacBook Pro with a physical Touch Bar.
 
-It shows the available earned reset credits and the weekly window, and only appears while Codex is active or while Codex CLI owns the foreground terminal session. The visible labels and reset timestamps follow the system language, with Chinese and English supported out of the box.
+It shows the available earned reset credits and quota windows, and only appears while Codex or Antigravity is active. The visible labels and reset timestamps follow the system language, with Chinese and English supported out of the box.
 
 ## Requirements
 
 - MacBook Pro with a physical Touch Bar.
 - macOS 13 or newer.
 - Codex installed and signed in. The bridge will auto-detect the executable from `CODEX_EXECUTABLE`, `PATH`, `ChatGPT.app`, or `Codex.app`.
+- Antigravity installed and signed in if you want Gemini usage. The bridge reads the existing `gemini` / `antigravity` macOS Keychain credential without writing or refreshing it.
 - BetterTouchTool installed at `/Applications/BetterTouchTool.app`.
 - Swift 6.1 or newer if you want to build from source.
 
@@ -75,6 +76,8 @@ English system locale:
 
 The exact percentages and reset times come from the local Codex app-server.
 
+When Antigravity is frontmost, the same widget switches to Gemini's Antigravity quota. Gemini has no earned reset-credit field, so its line starts directly with `5小时` / `5h` and the two quota windows.
+
 ## Verification
 
 Run the bridge directly before configuring BetterTouchTool:
@@ -83,12 +86,13 @@ Run the bridge directly before configuring BetterTouchTool:
 "$HOME/Library/Application Support/CodexTouchBar/bin/codex-usage" --force
 ```
 
-If Codex is signed in, the command should print one line. If the widget is not visible yet, switch to ChatGPT.app or to a terminal with Codex CLI running in the foreground and wait for the next refresh.
+If Codex or Antigravity is signed in, the command should print one line. If the widget is not visible yet, switch to ChatGPT.app, Antigravity, or a terminal with Codex CLI running in the foreground and wait for the next refresh.
 
 ## Troubleshooting
 
 - `请先在 Codex 登录` or `Sign in to Codex first`: open Codex and sign in.
 - `Codex 用量暂不可用` or `Codex usage unavailable`: confirm Codex is installed or set `CODEX_EXECUTABLE` to the actual `codex` binary, then retry the forced command.
+- `Codex 用量暂不可用` while Antigravity is frontmost: confirm Antigravity is signed in and that the `gemini` / `antigravity` Keychain item is available; the Gemini quota endpoint is internal to Antigravity and may be unavailable during a Google service issue.
 - A trailing `·`: the live request failed and a cache no older than five minutes is being shown.
 - If the number still looks behind by a few seconds, wait for the next 15-second refresh cycle.
 - Nothing is printed: this is expected when Codex is not active.
@@ -105,4 +109,4 @@ This removes the installed bridge and the cache under `~/Library/Application Sup
 
 ## Privacy
 
-The only persisted data is stored in `~/Library/Caches/CodexTouchBar/usage.json`: percentages, window durations, reset timestamps, and the last successful update time. No access tokens, account identifiers, prompts, or conversation content are stored.
+The only persisted data is stored in `~/Library/Caches/CodexTouchBar/usage.json` and `gemini-usage.json`: percentages, window durations, reset timestamps, and the last successful update time. The Antigravity access token is read in memory from Keychain and never stored, refreshed, or logged. No account identifiers, prompts, or conversation content are stored.
