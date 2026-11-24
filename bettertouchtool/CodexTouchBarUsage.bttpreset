@@ -11,7 +11,7 @@
       "BTTAppProcessName": "ChatGPT",
       "BTTTriggers": [
         {
-          "BTTWidgetName": "Codex 用量",
+          "BTTWidgetName": "GPT 用量",
           "BTTTriggerType": 642,
           "BTTTriggerTypeDescription": "Shell Script / Task Widget",
           "BTTTriggerClass": "BTTTriggerTypeTouchBar",
@@ -49,7 +49,7 @@
       "BTTAppProcessName": "Terminal",
       "BTTTriggers": [
         {
-          "BTTWidgetName": "Codex 用量",
+          "BTTWidgetName": "GPT 用量",
           "BTTTriggerType": 642,
           "BTTTriggerTypeDescription": "Shell Script / Task Widget",
           "BTTTriggerClass": "BTTTriggerTypeTouchBar",
@@ -87,7 +87,7 @@
       "BTTAppProcessName": "iTerm2",
       "BTTTriggers": [
         {
-          "BTTWidgetName": "Codex 用量",
+          "BTTWidgetName": "GPT 用量",
           "BTTTriggerType": 642,
           "BTTTriggerTypeDescription": "Shell Script / Task Widget",
           "BTTTriggerClass": "BTTTriggerTypeTouchBar",

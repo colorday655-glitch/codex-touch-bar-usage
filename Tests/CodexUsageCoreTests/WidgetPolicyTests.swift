@@ -57,7 +57,7 @@ struct WidgetPolicyTests {
             locale: englishLocale
         )
 
-        #expect(output == "Codex usage unavailable")
+        #expect(output == "GPT usage unavailable")
     }
 
     @Test("shows a signed-out message")
@@ -69,7 +69,7 @@ struct WidgetPolicyTests {
             locale: englishLocale
         )
 
-        #expect(output == "Sign in to Codex first")
+        #expect(output == "Sign in to GPT first")
     }
 
     private func temporaryCache() -> UsageCache {

@@ -42,7 +42,8 @@ public struct UsageFormatter: Sendable {
         let filledCount = min(10, max(0, Int((remaining / 10).rounded())))
         let bar = String(repeating: "🟩", count: filledCount)
             + String(repeating: "⬜", count: 10 - filledCount)
-        let percentage = Int(remaining.rounded())
+        // Antigravity presents remaining quota as a ceiling percentage (99.01% -> 100%).
+        let percentage = Int(remaining.rounded(.up))
         switch resetStyle {
         case .fiveHour:
             let reset = resetDescription(window.resetsAt, style: resetStyle) ?? "--"

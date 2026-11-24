@@ -113,6 +113,19 @@ struct UsageFormatterTests {
         #expect(output.contains("100%"))
     }
 
+    @Test("rounds remaining percentages up like Antigravity")
+    func roundsRemainingPercentagesUp() {
+        let snapshot = RateLimitSnapshot(
+            primary: RateLimitWindow(usedPercent: 0.99, windowDurationMins: 300, resetsAt: nil),
+            secondary: RateLimitWindow(usedPercent: 0.99, windowDurationMins: 10_080, resetsAt: nil)
+        )
+
+        let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale)
+            .render(snapshot, showResetCredits: false)
+
+        #expect(output.contains("5小时") && output.contains("100%"))
+    }
+
     @Test("marks stale output and tolerates a missing window")
     func marksStaleAndMissingWindow() {
         let snapshot = RateLimitSnapshot(

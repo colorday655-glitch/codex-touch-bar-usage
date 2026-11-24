@@ -48,11 +48,11 @@ public struct CodexLocalization: Sendable {
     }
 
     public var unauthenticatedMessage: String {
-        isChinese ? "请先在 Codex 登录" : "Sign in to Codex first"
+        isChinese ? "请先在 GPT 登录" : "Sign in to GPT first"
     }
 
     public var unavailableMessage: String {
-        isChinese ? "Codex 用量暂不可用" : "Codex usage unavailable"
+        isChinese ? "GPT 用量暂不可用" : "GPT usage unavailable"
     }
 
     public var outdatedReleaseMessage: String {
