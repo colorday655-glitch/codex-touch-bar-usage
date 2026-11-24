@@ -7,13 +7,14 @@ public struct WidgetPolicy: Sendable {
         client: any RateLimitFetching,
         cache: UsageCache,
         now: Date = Date(),
-        locale: Locale = .autoupdatingCurrent
+        locale: Locale = .autoupdatingCurrent,
+        showResetCredits: Bool = true
     ) async -> String {
         let localization = CodexLocalization(locale: locale)
         do {
             let snapshot = try await client.fetchRateLimits()
             try? cache.save(CachedUsage(snapshot: snapshot, updatedAt: now))
-            return UsageFormatter(now: now, locale: locale).render(snapshot)
+            return UsageFormatter(now: now, locale: locale).render(snapshot, showResetCredits: showResetCredits)
         } catch AppServerError.unauthenticated {
             return localization.unauthenticatedMessage
         } catch {
@@ -23,7 +24,8 @@ public struct WidgetPolicy: Sendable {
             else {
                 return localization.unavailableMessage
             }
-            return UsageFormatter(now: now, locale: locale).render(cached.snapshot, stale: true)
+            return UsageFormatter(now: now, locale: locale)
+                .render(cached.snapshot, stale: true, showResetCredits: showResetCredits)
         }
     }
 }

@@ -72,6 +72,20 @@ struct UsageFormatterTests {
         #expect(output.contains("11:06"))
     }
 
+    @Test("renders Gemini windows without a fabricated reset credit count")
+    func rendersGeminiWithoutResetCredits() {
+        let snapshot = RateLimitSnapshot(
+            primary: RateLimitWindow(usedPercent: 10, windowDurationMins: 300, resetsAt: 2_000),
+            secondary: RateLimitWindow(usedPercent: 20, windowDurationMins: 10_080, resetsAt: 3_000)
+        )
+
+        let output = UsageFormatter(now: now, timeZone: timeZone, locale: chineseLocale)
+            .render(snapshot, showResetCredits: false)
+
+        #expect(!output.contains("可重置"))
+        #expect(output.hasPrefix("5小时"))
+    }
+
     @Test("selects windows by duration when roles are reordered")
     func selectsReorderedWindowsByDuration() {
         let snapshot = RateLimitSnapshot(

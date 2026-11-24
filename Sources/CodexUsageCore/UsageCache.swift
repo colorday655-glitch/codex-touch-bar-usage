@@ -44,8 +44,27 @@ public struct UsageCache: Sendable {
     }
 
     public static func defaultFileURL(homeDirectory: URL = FileManager.default.homeDirectoryForCurrentUser) -> URL {
+        defaultFileURL(product: .codex, homeDirectory: homeDirectory)
+    }
+
+    public static func defaultFileURL(
+        product: UsageProduct,
+        homeDirectory: URL = FileManager.default.homeDirectoryForCurrentUser
+    ) -> URL {
         homeDirectory
             .appendingPathComponent("Library/Caches/CodexTouchBar", isDirectory: true)
-            .appendingPathComponent("usage.json")
+            .appendingPathComponent(product.cacheFileName)
+    }
+}
+
+public enum UsageProduct: Sendable {
+    case codex
+    case gemini
+
+    fileprivate var cacheFileName: String {
+        switch self {
+        case .codex: return "usage.json"
+        case .gemini: return "gemini-usage.json"
+        }
     }
 }

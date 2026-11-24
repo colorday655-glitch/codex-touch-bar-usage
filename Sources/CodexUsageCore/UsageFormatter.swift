@@ -15,7 +15,11 @@ public struct UsageFormatter: Sendable {
         self.localization = CodexLocalization(locale: locale)
     }
 
-    public func render(_ snapshot: RateLimitSnapshot, stale: Bool = false) -> String {
+    public func render(
+        _ snapshot: RateLimitSnapshot,
+        stale: Bool = false,
+        showResetCredits: Bool = true
+    ) -> String {
         let selected = snapshot.selectedWindows()
         var rows = [
             row(label: localization.fiveHourLabel, window: selected.fiveHour, resetStyle: .fiveHour),
@@ -24,6 +28,7 @@ public struct UsageFormatter: Sendable {
         if stale {
             rows[rows.count - 1] += " ·"
         }
+        guard showResetCredits else { return rows.joined(separator: "    ") }
         let resetCredits = localization.resetCreditsText(snapshot.resetCredits?.availableCount ?? 0)
         return ([resetCredits] + rows).joined(separator: "    ")
     }

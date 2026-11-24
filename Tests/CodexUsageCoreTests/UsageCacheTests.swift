@@ -9,6 +9,16 @@ struct UsageCacheTests {
         secondary: RateLimitWindow(usedPercent: 56, windowDurationMins: 10_080, resetsAt: 3_000)
     )
 
+    @Test("keeps Codex and Gemini cache paths separate")
+    func keepsProviderCachePathsSeparate() {
+        let codex = UsageCache.defaultFileURL(product: .codex)
+        let gemini = UsageCache.defaultFileURL(product: .gemini)
+
+        #expect(codex != gemini)
+        #expect(codex.lastPathComponent == "usage.json")
+        #expect(gemini.lastPathComponent == "gemini-usage.json")
+    }
+
     @Test("expires after five minutes")
     func expiresAfterFiveMinutes() {
         let stored = CachedUsage(
