@@ -8,7 +8,9 @@ public struct WidgetPolicy: Sendable {
         cache: UsageCache,
         now: Date = Date(),
         locale: Locale = .autoupdatingCurrent,
-        showResetCredits: Bool = true
+        showResetCredits: Bool = true,
+        unauthenticatedMessage: String? = nil,
+        unavailableMessage: String? = nil
     ) async -> String {
         let localization = CodexLocalization(locale: locale)
         do {
@@ -16,13 +18,13 @@ public struct WidgetPolicy: Sendable {
             try? cache.save(CachedUsage(snapshot: snapshot, updatedAt: now))
             return UsageFormatter(now: now, locale: locale).render(snapshot, showResetCredits: showResetCredits)
         } catch AppServerError.unauthenticated {
-            return localization.unauthenticatedMessage
+            return unauthenticatedMessage ?? localization.unauthenticatedMessage
         } catch {
             guard
                 let cached = try? cache.load(),
                 cached.isUsable(at: now)
             else {
-                return localization.unavailableMessage
+                return unavailableMessage ?? localization.unavailableMessage
             }
             return UsageFormatter(now: now, locale: locale)
                 .render(cached.snapshot, stale: true, showResetCredits: showResetCredits)

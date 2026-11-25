@@ -55,6 +55,14 @@ public struct CodexLocalization: Sendable {
         isChinese ? "GPT 用量暂不可用" : "GPT usage unavailable"
     }
 
+    public var geminiUnauthenticatedMessage: String {
+        isChinese ? "请先在 Antigravity 登录" : "Sign in to Antigravity first"
+    }
+
+    public var geminiUnavailableMessage: String {
+        isChinese ? "Gemini 用量暂不可用" : "Gemini usage unavailable"
+    }
+
     public var outdatedReleaseMessage: String {
         isChinese ? "当前版本已过期，请安装 GitHub 最新版" : "This release is outdated. Install the latest GitHub release."
     }

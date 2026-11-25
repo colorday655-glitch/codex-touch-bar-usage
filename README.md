@@ -92,7 +92,7 @@ If Codex or Antigravity is signed in, the command should print one line. If the 
 
 - `请先在 GPT 登录` or `Sign in to GPT first`: open the GPT/Codex app and sign in.
 - `GPT 用量暂不可用` or `GPT usage unavailable`: confirm Codex is installed or set `CODEX_EXECUTABLE` to the actual `codex` binary, then retry the forced command.
-- `GPT 用量暂不可用` while Antigravity is frontmost: confirm Antigravity is signed in and that the `gemini` / `antigravity` Keychain item is available; the Gemini quota endpoint is internal to Antigravity and may be unavailable during a Google service issue.
+- `Gemini 用量暂不可用` or `Gemini usage unavailable`: confirm Antigravity is signed in and that the `gemini` / `antigravity` Keychain item is available; after an Antigravity upgrade, sign in again if its OAuth token was rotated.
 - A trailing `·`: the live request failed and a cache no older than five minutes is being shown.
 - If the number still looks behind by a few seconds, wait for the next 15-second refresh cycle.
 - Nothing is printed: this is expected when Codex is not active.

@@ -64,7 +64,7 @@ public struct GeminiUsageClient: RateLimitFetching, Sendable {
         request.httpMethod = "POST"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("antigravity/2.35.0 \(Self.platform)", forHTTPHeaderField: "User-Agent")
+        request.setValue("antigravity/\(Self.antigravityVersion) \(Self.platform)", forHTTPHeaderField: "User-Agent")
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
 
         let data: Data
@@ -124,6 +124,15 @@ public struct GeminiUsageClient: RateLimitFetching, Sendable {
     }
 
     private static let platform = "darwin/\(Self.architecture)"
+
+    private static var antigravityVersion: String {
+        guard
+            let info = NSDictionary(contentsOfFile: "/Applications/Antigravity.app/Contents/Info.plist") as? [String: Any],
+            let version = info["CFBundleShortVersionString"] as? String,
+            !version.isEmpty
+        else { return "2.35.0" }
+        return version
+    }
 
     private static var architecture: String {
 #if arch(arm64)

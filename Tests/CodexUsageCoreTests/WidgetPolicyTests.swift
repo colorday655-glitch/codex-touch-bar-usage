@@ -72,6 +72,19 @@ struct WidgetPolicyTests {
         #expect(output == "Sign in to GPT first")
     }
 
+    @Test("supports provider-specific unavailable messages")
+    func supportsProviderSpecificUnavailableMessage() async {
+        let output = await WidgetPolicy().output(
+            client: StubFetcher(result: .failure(.disconnected)),
+            cache: temporaryCache(),
+            now: now,
+            locale: englishLocale,
+            unavailableMessage: "Gemini usage unavailable"
+        )
+
+        #expect(output == "Gemini usage unavailable")
+    }
+
     private func temporaryCache() -> UsageCache {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)

@@ -34,10 +34,13 @@ struct CodexUsageMain {
         let output: String
         if antigravityActive {
             let cache = UsageCache(fileURL: UsageCache.defaultFileURL(product: .gemini))
+            let localization = CodexLocalization()
             output = await WidgetPolicy().output(
                 client: GeminiUsageClient(),
                 cache: cache,
-                showResetCredits: false
+                showResetCredits: false,
+                unauthenticatedMessage: localization.geminiUnauthenticatedMessage,
+                unavailableMessage: localization.geminiUnavailableMessage
             )
         } else {
             guard let codexPath = CodexExecutableLocator().resolve() else {
